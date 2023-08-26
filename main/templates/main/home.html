@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+{%load static%}
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<title>To-Do List App</title>
+
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>To-Do List App</h1>
+  </div>
+  <div class="content">
+    <div class="task-form" method="POST">
+      <h2>Add New Task</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.title }}
+      <button type="submit">Add Task</button>
+    </form>
+    </div>
+    <div class="task-stats">
+      <h2>Task Statistics</h2>
+      <p>Total Tasks: <span id="totalTasks">{{total_tasks}}</span></p>
+      <p>Completed Tasks: <span id="completedTasks">{{completed_tasks_count}}</span></p>
+      <p>Incomplete Tasks: <span id="incompleteTasks">{{incompleted_tasks_count}}</span></p>
+    </div>
+    <div class="task-list">
+      <h2>Task List</h2>
+      <ul id="tasks">
+        {% for task in tasks %}
+        {% if task.completed == True %}
+        <li>
+          <!-- <input type="checkbox" class="task-checkbox" checked> -->
+          <span class="task-name completed">{{task.title}}</span>
+          <a class="edit-button" href="{% url 'update' task.id %}" style="text-decoration: none;">Edit</a>
+          <a class="edit-button" href="{% url 'delete' task.id %}" style="text-decoration: none;">Delete</a>
+        </li>
+        {% else %}
+
+        <li>
+          <!-- <input type="checkbox" class="task-checkbox"> -->
+          <span class="task-name">{{task.title}}</span>
+          <a class="edit-button" href="{% url 'update' task.id %}" style="text-decoration: none;">Edit</a>
+          <a class="edit-button" href="{% url 'delete' task.id %}" style="text-decoration: none;">Delete</a>
+        </li>
+
+        {% endif %}
+        {% endfor %}
+        
+        
+        <!-- Add similar structures for other tasks -->
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>
